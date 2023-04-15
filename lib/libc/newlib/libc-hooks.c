@@ -25,7 +25,7 @@
 
 #define LIBC_BSS	K_APP_BMEM(z_libc_partition)
 #define LIBC_DATA	K_APP_DMEM(z_libc_partition)
-
+#define LPDR_MODING
 /*
  * End result of this thorny set of ifdefs is to define:
  *
@@ -304,6 +304,7 @@ void *_sbrk(intptr_t count)
 }
 __weak FUNC_ALIAS(_sbrk, sbrk, void *);
 
+#ifndef LPDR_MODING
 #ifdef CONFIG_MULTITHREADING
 
 /* Make sure _RETARGETABLE_LOCKING is enabled in toolchain */
@@ -453,6 +454,7 @@ void __retarget_lock_release_recursive(_LOCK_T lock)
 	k_mutex_unlock((struct k_mutex *)lock);
 }
 #endif /* CONFIG_MULTITHREADING */
+#endif /* LPDR_MODING */
 
 __weak int *__errno(void)
 {
