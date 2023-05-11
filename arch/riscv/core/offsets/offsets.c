@@ -24,6 +24,12 @@
 #ifdef CONFIG_RISCV_SOC_OFFSETS
 #include <soc_offsets.h>
 #endif
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+#include <custom_context.h>
+#endif
+#ifdef CONFIG_RISCV_CUSTOM_OFFSETS
+#include <custom_offsets.h>
+#endif
 
 /* struct _callee_saved member offsets */
 GEN_OFFSET_SYM(_callee_saved_t, sp);
@@ -117,6 +123,12 @@ GEN_OFFSET_SYM(z_arch_esf_t, soc_context);
 #endif
 #if defined(CONFIG_RISCV_SOC_OFFSETS)
 GEN_SOC_OFFSET_SYMS();
+#endif
+#if defined(CONFIG_RISCV_CUSTOM_CONTEXT_SAVE)
+GEN_OFFSET_SYM(_callee_saved_t, custom_context);
+#endif
+#if defined(CONFIG_RISCV_CUSTOM_OFFSETS)
+GEN_CUSTOM_OFFSETS_SYMS();
 #endif
 
 GEN_ABSOLUTE_SYM(__z_arch_esf_t_SIZEOF, sizeof(z_arch_esf_t));

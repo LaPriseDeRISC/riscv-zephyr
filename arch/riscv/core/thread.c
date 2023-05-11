@@ -28,6 +28,9 @@ void arch_new_thread(struct k_thread *thread, k_thread_stack_t *stack,
 #ifdef CONFIG_RISCV_SOC_CONTEXT_SAVE
 	const struct soc_esf soc_esf_init = {SOC_ESF_INIT};
 #endif
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+    const struct custom_ctx custom_context_init = {CUSTOM_CONTEXT_INIT};
+#endif
 
 	/* Initial stack frame for thread */
 	stack_init = (struct __esf *)Z_STACK_PTR_ALIGN(
@@ -110,6 +113,10 @@ void arch_new_thread(struct k_thread *thread, k_thread_stack_t *stack,
 
 #ifdef CONFIG_RISCV_SOC_CONTEXT_SAVE
 	stack_init->soc_context = soc_esf_init;
+#endif
+
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+    thread->callee_saved.custom_context = custom_context_init;
 #endif
 
 	thread->callee_saved.sp = (unsigned long)stack_init;

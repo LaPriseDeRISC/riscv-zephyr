@@ -9,6 +9,18 @@
 
 #include <offsets.h>
 
+#ifdef CONFIG_RISCV_CUSTOM_OFFSETS
+#define MERGE_(x, y) x ## y
+#define MERGE(x, y) MERGE_(x, y)
+
+#define _thread_offset_to_custom_context \
+	(___thread_t_callee_saved_OFFSET + ___callee_saved_t_custom_context_OFFSET)
+
+#define CUSTOM_SAVE_OFFSET(member) \
+      (_thread_offset_to_custom_context + MERGE(__custom_context_t_, MERGE(member,_OFFSET)))
+
+#endif
+
 /* kernel */
 
 /* nothing for now */

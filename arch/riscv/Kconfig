@@ -93,6 +93,54 @@ config RISCV_SOC_OFFSETS
 	    in offsets.h. The last one should not end in a semicolon.
 	    See gen_offset.h for more details.
 
+config RISCV_CUSTOM_CONTEXT_SAVE
+    bool "Enable low level context switching actions"
+    select RISCV_CUSTOM_OFFSETS
+    help
+        Enable low-level context switching actions
+        ex : shadow stacks management
+        Very SOC specific, its recommended to leave this untouched
+
+        Enabling this option requires that the SoC provides
+        custom_context.h defining the following macros:
+
+        - CUSTOM_CONTEXT_MEMBERS: Structure component declarations to
+            allocate space for. The last such declaration should not
+            end in a semicolon, for portability. The generic RISC-V
+            architecture code will allocate space for these members in
+            a "struct custom_ctx" type (typedefed to custom_context_t), which will
+            be available if arch.h is included.
+
+        - CUSTOM_CONTEXT_INIT: Structure contents initializer for struct custom_ctx
+            state. The last initialized member should not end in a comma.
+
+        On each context switch the z_riscv_switch function will call
+            \_\_custom_switch_context right after saving the callee registers of the previous thread,
+            before restoring the ones from the new thread
+            This function:
+
+            ``void __custom_switch_context(k_thread_t *switch_to, k_thread_t *switch_from);``
+
+            Has the same signature as z_riscv_switch.
+            The calls obey standard calling conventions; i.e., the next
+            thread pointer address is in a0, and the new one in a1,
+            ra contains the return address.
+            Custom saved members addresses can be retrieved with the macro
+            ``CUSTOM_SAVE_OFFSET(member)`` available in "offsets_short_arch.h"
+
+
+config RISCV_CUSTOM_OFFSETS
+	bool "Custom context switch offsets"
+	help
+	  Enabling this option requires that the SoC provide a custom_offsets.h
+	  header which defines the following macros:
+
+	  - GEN_CUSTOM_OFFSET_SYMS(): a macro which expands to
+	    GEN_OFFSET_SYM(custom_context_t, custom_member) calls
+	    to ensure offset macros for CUSTOM_CONTEXT_MEMBERS are defined
+	    in offsets.h. The last one should not end in a semicolon.
+	    See gen_offset.h for more details.
+
 config RISCV_SOC_INTERRUPT_INIT
 	bool "SOC-based interrupt initialization"
 	help

@@ -71,6 +71,10 @@ skip_store_fp_callee_saved:
 	/* Set thread->switch_handle = thread to mark completion */
 	sr a1, ___thread_t_switch_handle_OFFSET(a1)
 
+#if defined(CONFIG_RISCV_CUSTOM_CONTEXT_SAVE)
+     call __custom_switch_context
+#endif
+
 	/* Get the new thread's stack pointer */
 	lr sp, _thread_offset_to_sp(a0)
 

@@ -22,12 +22,22 @@
 #ifndef _ASMLANGUAGE
 #include <zephyr/types.h>
 
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+#include <custom_context.h>
+#endif
+
 #if !defined(RV_FP_TYPE) && defined(CONFIG_FPU) && defined(CONFIG_FPU_SHARING)
 #ifdef CONFIG_CPU_HAS_FPU_DOUBLE_PRECISION
 #define RV_FP_TYPE uint64_t
 #else
 #define RV_FP_TYPE uint32_t
 #endif
+#endif
+
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+struct custom_ctx {
+	CUSTOM_CONTEXT_MEMBERS;
+};
 #endif
 
 /*
@@ -68,6 +78,9 @@ struct _callee_saved {
 	RV_FP_TYPE fs10;	/* saved floating-point register */
 	RV_FP_TYPE fs11;	/* saved floating-point register */
 #endif
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+    struct custom_ctx custom_context;
+#endif
 };
 typedef struct _callee_saved _callee_saved_t;
 
@@ -88,6 +101,10 @@ struct _thread_arch {
 	unsigned long m_mode_pmpcfg_regs[PMP_M_MODE_SLOTS / sizeof(unsigned long)];
 #endif
 };
+
+#ifdef CONFIG_RISCV_CUSTOM_CONTEXT_SAVE
+typedef struct custom_ctx custom_context_t;
+#endif
 
 typedef struct _thread_arch _thread_arch_t;
 
