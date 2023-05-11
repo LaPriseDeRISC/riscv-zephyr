@@ -242,8 +242,8 @@ skip_store_fp_caller_saved:
 	 * no_reschedule to restore stack.
 	 */
 	mv a0, sp
-	la ra, no_reschedule
-	tail _Fault
+    call _Fault
+	tail no_reschedule
 
 is_kernel_syscall:
 	/*
