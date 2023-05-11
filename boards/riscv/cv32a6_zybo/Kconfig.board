@@ -2,4 +2,4 @@
 
 config BOARD_CV32A6_ZYBO
 	bool "CV32A6 Zybo target"
-	depends on SOC_RISCV_C32VA6
+	depends on SOC_RISCV_CV32A6
