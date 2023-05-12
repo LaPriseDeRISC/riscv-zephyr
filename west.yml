@@ -203,7 +203,8 @@ manifest:
       path: modules/lib/openthread
     - name: picolibc
       path: modules/lib/picolibc
-      revision: 04ada5951cbaf8e7b17f8226ce31cb6837c28ba7
+      url: https://github.com/LaPriseDeRISC/picolibc.git
+      revision: a4b205f275b0b71c8431164263433bb97d2386ee
     - name: segger
       revision: d4e568a920b4bd087886170a5624c167b2d0665e
       path: modules/debug/segger
