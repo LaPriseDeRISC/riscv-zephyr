@@ -204,7 +204,7 @@ manifest:
     - name: picolibc
       path: modules/lib/picolibc
       url: https://github.com/LaPriseDeRISC/picolibc.git
-      revision: a4b205f275b0b71c8431164263433bb97d2386ee
+      revision: cc30c05edae7dc9247e04a1f8fb38e7d83ae0576
     - name: segger
       revision: d4e568a920b4bd087886170a5624c167b2d0665e
       path: modules/debug/segger
